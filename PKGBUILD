@@ -18,11 +18,15 @@ build() {
 package() {
 	cd $srcdir/utils
 	mkdir -p $pkgdir/usr/bin
-	find . -perm /a+x -exec cp {} $pkgdir/usr/bin \;
+
+	for f in *; do
+	if [[ -x $f && -f $f ]]; then
+		cp -p $f $pkgdir/usr/bin/tss_$f
+	fi;
+	done
 	cd $pkgdir/usr
 	mkdir lib
-	rm bin/{clear,import,shutdown,*.sh}
-	mv bin/libtss.so lib/
+	cp $srcdir/utils/libtss.so  $pkgdir/usr/lib/
 }
 
 md5sums=('9b696c9d7470326f67f8d5bc9063d3d3')
